@@ -211,6 +211,20 @@ sensor:
         expect(formatted).toContain('"text":"Hello"');
     });
 
+    it('formats OEPL service YAML with a device target', () => {
+        const serviceData = {
+            service: 'open_epaper_link.drawcustom',
+            target: { entity_id: 'open_epaper_link.0000000000000000' },
+            data: { background: 'white', rotate: 0, ttl: 60, payload: [] }
+        };
+
+        const formatted = formatOEPLServiceYaml(serviceData, { oeplEntityId: '95b2d0433f2c26d08088d6296a00a70d' });
+
+        expect(serviceData.target).toEqual({ device_id: '95b2d0433f2c26d08088d6296a00a70d' });
+        expect(formatted).toContain('target:\n  device_id: 95b2d0433f2c26d08088d6296a00a70d\n');
+        expect(formatted).not.toContain('entity_id');
+    });
+
     it('extracts payload block from OpenDisplay YAML', () => {
         const odpYaml = [
             'action: opendisplay.drawcustom',
